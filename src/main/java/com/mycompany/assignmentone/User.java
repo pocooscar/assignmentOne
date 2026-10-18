@@ -53,6 +53,17 @@ public class User {
     }
 
     public boolean isValidPhoneNumber(String input) {
+        return isValidCellNumber(input);
+    }
+
+    /**
+     * Shared cell number rule: a '+' country code followed by digits,
+     * no more than 12 characters in total. Static so that other classes
+     * (e.g. Message) can reuse it without creating a User.
+     * @param input the cell number to check
+     * @return true if the number is correctly formatted
+     */
+    public static boolean isValidCellNumber(String input) {
         String pattern = "^\\+\\d{1,11}$";
         return input != null && input.length() <= 12 && input.matches(pattern);
     }
@@ -147,11 +158,15 @@ public class User {
     }
 
     //  LOGIN
-    public void loginInteractive() {
+    /**
+     * Console login with up to 3 attempts.
+     * @return true if the user logged in successfully
+     */
+    public boolean loginInteractive() {
 
         if (!account) {
             System.out.println("No account found. Please register first.");
-            return;
+            return false;
         }
 
         System.out.println("Welcome back to Ospoco Chatting System.");
@@ -180,6 +195,7 @@ public class User {
                 }
             }
         }
+        return loggedIn;
     }
 
     // GETTERS 

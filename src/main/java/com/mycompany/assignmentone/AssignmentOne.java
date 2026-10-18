@@ -25,7 +25,13 @@ public class AssignmentOne {
                 
                 switch (choice) {
                     case "1" -> user.register();
-                    case "2" -> user.loginInteractive();
+                    case "2" -> {
+                        if (user.loginInteractive()) {
+                            String sender = user.get_first_name() + " " + user.get_last_name();
+                            new QuickChat(menuScanner, sender.trim(), new MessageManager()).run();
+                            running = false;
+                        }
+                    }
                     case "3" -> {
                         System.out.println("Goodbye!");
                         running = false;

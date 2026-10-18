@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.mycompany.assignmentone.UserTest" time="0.143" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.mycompany.assignmentone.UserTest" time="0.059" tests="10" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\test-classes;C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\classes;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;"/>
+    <property name="java.class.path" value="C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\test-classes;C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\classes;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\json\json\20240303\json-20240303.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;"/>
     <property name="java.vm.vendor" value="Eclipse Adoptium"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.12.101-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire11842095456158608835\surefirebooter-20261018030427558_3.jar C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire11842095456158608835 2026-10-18T03-04-27_283-jvmRun1 surefire-20261018030427558_1tmp surefire_0-20261018030427558_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire4928534559813905708\surefirebooter-20261018040102387_3.jar C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire4928534559813905708 2026-10-18T04-01-02_222-jvmRun1 surefire-20261018040102387_1tmp surefire_0-20261018040102387_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\test-classes;C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\classes;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\test-classes;C:\Users\OSCAR THE SOFTWARE G\Documents\NetBeansProjects\assignmentOne\target\classes;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\json\json\20240303\json-20240303.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.3\junit-jupiter-api-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-commons\1.10.3\junit-platform-commons-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.3\junit-jupiter-params-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.3\junit-jupiter-engine-5.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\junit\platform\junit-platform-engine\1.10.3\junit-platform-engine-1.10.3.jar;C:\Users\OSCAR THE SOFTWARE G\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\OSCAR THE SOFTWARE G"/>
     <property name="user.language" value="en"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire11842095456158608835\surefirebooter-20261018030427558_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\OSCAR THE SOFTWARE G\AppData\Local\Temp\surefire4928534559813905708\surefirebooter-20261018040102387_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.12.1+1-LTS"/>
@@ -60,37 +60,37 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testValidPassword" classname="com.mycompany.assignmentone.UserTest" time="0.042">
+  <testcase name="testValidPassword" classname="com.mycompany.assignmentone.UserTest" time="0.007">
     <system-out><![CDATA[testValidPassword result: true
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidUsername" classname="com.mycompany.assignmentone.UserTest" time="0.01">
+  <testcase name="testInvalidUsername" classname="com.mycompany.assignmentone.UserTest" time="0.002">
     <system-out><![CDATA[testInvalidUsername result: false
 ]]></system-out>
   </testcase>
-  <testcase name="testGetPhone" classname="com.mycompany.assignmentone.UserTest" time="0.014">
+  <testcase name="testGetPhone" classname="com.mycompany.assignmentone.UserTest" time="0.003">
     <system-out><![CDATA[testGetPhone result: ""
 ]]></system-out>
   </testcase>
-  <testcase name="testLoginSuccess" classname="com.mycompany.assignmentone.UserTest" time="0.009">
+  <testcase name="testLoginSuccess" classname="com.mycompany.assignmentone.UserTest" time="0.008">
     <system-out><![CDATA[Welcome Kyle Test, it is great to see you again.
 testLoginSuccess result: true
 ]]></system-out>
   </testcase>
-  <testcase name="testLoginFailure" classname="com.mycompany.assignmentone.UserTest" time="0.002">
+  <testcase name="testLoginFailure" classname="com.mycompany.assignmentone.UserTest" time="0.004">
     <system-out><![CDATA[Incorrect username or password.
 testLoginFailure result: false
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidPassword" classname="com.mycompany.assignmentone.UserTest" time="0.006">
+  <testcase name="testInvalidPassword" classname="com.mycompany.assignmentone.UserTest" time="0.002">
     <system-out><![CDATA[testInvalidPassword result: false
 ]]></system-out>
   </testcase>
-  <testcase name="testValidPhoneNumber" classname="com.mycompany.assignmentone.UserTest" time="0.003">
+  <testcase name="testValidPhoneNumber" classname="com.mycompany.assignmentone.UserTest" time="0.002">
     <system-out><![CDATA[testValidPhoneNumber result: true
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidPhoneNumber" classname="com.mycompany.assignmentone.UserTest" time="0.003">
+  <testcase name="testInvalidPhoneNumber" classname="com.mycompany.assignmentone.UserTest" time="0.004">
     <system-out><![CDATA[testInvalidPhoneNumber result: false
 ]]></system-out>
   </testcase>

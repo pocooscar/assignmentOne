@@ -17,7 +17,7 @@ public class UserTest {
         return user;
     }
 
-    // TEST USERNAME VALIDATION
+    // TEST USERNAME VALIDATION.
     @Test
     public void testValidUsername() {
         User user = new User();
