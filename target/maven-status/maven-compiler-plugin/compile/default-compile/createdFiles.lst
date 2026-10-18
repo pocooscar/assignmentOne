@@ -1,7 +1,8 @@
 com\mycompany\assignmentone\MessageManager$1.class
 com\mycompany\assignmentone\User.class
 com\mycompany\assignmentone\Message.class
+com\mycompany\assignmentone\ChatAppGUI.class
 com\mycompany\assignmentone\MessageManager.class
 com\mycompany\assignmentone\Message$Status.class
-com\mycompany\assignmentone\QuickChat.class
+com\mycompany\assignmentone\ChatAppGUI$1.class
 com\mycompany\assignmentone\AssignmentOne.class

@@ -1,6 +1,8 @@
 package com.mycompany.assignmentone;
 
-import java.util.Scanner;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -9,36 +11,13 @@ import java.util.Scanner;
 public class AssignmentOne {
 
     public static void main(String[] args) {
-
-        try (Scanner menuScanner = new Scanner(System.in)) {
-            User user = new User(menuScanner);
-            boolean running = true;
-            
-            while (running) {
-                System.out.println("\n--- Ospoco Chatting System ---");
-                System.out.println("1. Register");
-                System.out.println("2. Login");
-                System.out.println("3. Exit");
-                System.out.print("Choose an option: ");
-                
-                String choice = menuScanner.nextLine();
-                
-                switch (choice) {
-                    case "1" -> user.register();
-                    case "2" -> {
-                        if (user.loginInteractive()) {
-                            String sender = user.get_first_name() + " " + user.get_last_name();
-                            new QuickChat(menuScanner, sender.trim(), new MessageManager()).run();
-                            running = false;
-                        }
-                    }
-                    case "3" -> {
-                        System.out.println("Goodbye!");
-                        running = false;
-                    }
-                    default -> System.out.println("Invalid option, please choose 1, 2, or 3.");
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ReflectiveOperationException | UnsupportedLookAndFeelException e) {
+                // keep Swing's default look and feel
             }
-        }
+            new ChatAppGUI().setVisible(true);
+        });
     }
 }

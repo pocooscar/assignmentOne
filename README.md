@@ -2,15 +2,15 @@
 
 ## Overview
 
-This project is a Java console application that implements a simple **user
-registration and login system**, built using object-oriented programming
-(OOP) principles. It was developed in NetBeans as a Maven project and is
-tested with JUnit 5.
+This project is a Java desktop (Swing) application that implements a simple
+**user registration and login system**, built using object-oriented
+programming (OOP) principles. It was developed in NetBeans as a Maven
+project and is tested with JUnit 5.
 
 The core idea: a `User` class encapsulates all account data (username,
 password, phone number, first/last name) and account behavior (validation,
-registration, login), while `AssignmentOne` provides a menu-driven console
-interface for interacting with a `User` object.
+registration, login), while `ChatAppGUI` provides the window the user
+interacts with. `AssignmentOne` is the entry point that opens it.
 
 After a successful login the user enters **QuickChat** (Parts 2 and 3),
 where they can send, store or disregard messages, and search, delete and
@@ -27,9 +27,9 @@ assignmentOne/
 │   ├── main/
 │   │   └── java/
 │   │       └── com/mycompany/assignmentone/
-│   │           ├── AssignmentOne.java   # Entry point / login menu
+│   │           ├── AssignmentOne.java   # Entry point, opens the GUI
+│   │           ├── ChatAppGUI.java      # Swing window for the whole app
 │   │           ├── User.java            # Account registration & login
-│   │           ├── QuickChat.java       # QuickChat console menus
 │   │           ├── Message.java         # A single message
 │   │           └── MessageManager.java  # Message arrays, search, reports
 │   └── test/
@@ -174,46 +174,42 @@ of the program's lifetime — not inside individual methods — since closing
 
 ---
 
-## Class: `AssignmentOne`
+## The GUI: `AssignmentOne` and `ChatAppGUI`
 
-The application's entry point. Presents a simple text menu in a loop:
+`AssignmentOne.main` opens a `ChatAppGUI` window using the operating
+system's normal look. Everything happens in that window:
 
-```
---- Ospoco Chatting System ---
-1. Register
-2. Login
-3. Exit
-Choose an option:
-```
+- **Menu buttons** on the left (the menu changes as you log in and move
+  into QuickChat or Stored Messages).
+- **An output area** on the right that shows results, messages and reports.
+- **Pop-up dialogs** for typing input (username, password, cell number,
+  message) and for confirmations and errors.
 
-| Option | Action                        |
-|--------|--------------------------------|
-| 1      | Calls `user.register()`        |
-| 2      | Calls `user.loginInteractive()`; on success, starts QuickChat |
-| 3      | Exits the loop and closes the scanner |
+The first menu is **Register**, **Login** and **Exit**. Registration and
+login use the same validation rules as Part 1 (`isValidUsername`,
+`isValidPassword`, `isValidPhoneNumber` and `login(...)`), with up to
+3 login attempts before the account is locked for the session. Pressing
+**Cancel** in any input dialog stops the current task and returns to the
+menu.
 
-A single `Scanner` wraps `System.in`. It is created in `main` and passed
-to `User` through the `User(Scanner)` constructor, so the menu and the
-registration/login prompts share it. It is closed once, at program exit,
-by the `try`-with-resources block. (Two separate `Scanner`s on `System.in`
-would each buffer input ahead and steal lines meant for the other.)
+The console methods `register()` and `loginInteractive()` are still in
+`User` from Part 1, but the GUI does not use them.
 
 ---
 
 ## QuickChat (Parts 2 and 3)
 
-QuickChat opens only after a successful login. It prints
+QuickChat opens only after a successful login. It shows
 **"Welcome to QuickChat."**, loads any messages saved in
 `storedMessages.json`, and asks how many messages the user wants to send.
 The user can only enter that many messages.
 
-```
---- QuickChat Menu ---
-1) Send Messages
-2) Show recently sent messages   -> "Coming Soon."
-3) Quit
-4) Stored Messages
-```
+QuickChat menu buttons:
+
+1. Send Messages
+2. Show recently sent messages (shows "Coming Soon.")
+3. Quit
+4. Stored Messages
 
 ### Sending a message
 
