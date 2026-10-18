@@ -10,8 +10,8 @@ public class AssignmentOne {
 
     public static void main(String[] args) {
 
-        User user = new User();
         try (Scanner menuScanner = new Scanner(System.in)) {
+            User user = new User(menuScanner);
             boolean running = true;
             
             while (running) {
@@ -33,8 +33,6 @@ public class AssignmentOne {
                     default -> System.out.println("Invalid option, please choose 1, 2, or 3.");
                 }
             }
-            
-            user.close_scanner();
         }
     }
 }

@@ -21,31 +21,40 @@ public class User {
     private final Scanner scanner;
     private boolean account;
 
-    // CONSTRUCTOR
+    // CONSTRUCTORS
     public User() {
+        this(new Scanner(System.in));
+    }
+
+    /**
+     * Only one Scanner should ever wrap System.in, because each Scanner
+     * buffers input ahead and would steal lines meant for the other.
+     * @param scanner the shared console Scanner
+     */
+    public User(Scanner scanner) {
         this.username = "";
         this.password = "";
         this.phoneNumber = "";
         this.first_name = "";
         this.last_name = "";
         this.account = false;
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     // VALIDATION HELPERS
 
     public boolean isValidUsername(String input) {
-        return input.length() <= 5 && input.contains("_");
+        return input != null && input.length() <= 5 && input.contains("_");
     }
 
     public boolean isValidPassword(String input) {
         String pattern = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,}$";
-        return input.matches(pattern);
+        return input != null && input.matches(pattern);
     }
 
     public boolean isValidPhoneNumber(String input) {
         String pattern = "^\\+\\d{1,11}$";
-        return input.length() <= 12 && input.matches(pattern);
+        return input != null && input.length() <= 12 && input.matches(pattern);
     }
 
     // REGISTRATION 
@@ -128,7 +137,7 @@ public class User {
             return false;
         }
 
-        if (inputUsername.equals(this.username) && inputPassword.equals(this.password)) {
+        if (this.username.equals(inputUsername) && this.password.equals(inputPassword)) {
             System.out.println("Welcome " + first_name + " " + last_name + ", it is great to see you again.");
             return true;
         } else {

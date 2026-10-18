@@ -180,9 +180,11 @@ Choose an option:
 | 2      | Calls `user.loginInteractive()`|
 | 3      | Exits the loop and closes scanners |
 
-Two `Scanner` instances are used in the current design — one owned by
-`User` (for registration/login prompts) and one in `main` (for the menu
-itself). Both wrap `System.in` and are closed once, at program exit.
+A single `Scanner` wraps `System.in`. It is created in `main` and passed
+to `User` through the `User(Scanner)` constructor, so the menu and the
+registration/login prompts share it. It is closed once, at program exit,
+by the `try`-with-resources block. (Two separate `Scanner`s on `System.in`
+would each buffer input ahead and steal lines meant for the other.)
 
 ---
 
