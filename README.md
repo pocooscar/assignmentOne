@@ -255,4 +255,4 @@ BUILD SUCCESS
 - **Known limitation**: the current design supports a single `User` per
   object/session. A multi-user system would need a collection (e.g.
   `ArrayList<User>`) or a dedicated manager class to register and look up
-  many accounts.
+  many accounts .
