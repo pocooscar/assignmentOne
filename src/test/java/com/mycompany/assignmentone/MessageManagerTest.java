@@ -126,4 +126,47 @@ public class MessageManagerTest {
         assertEquals(List.of(TEXT_2, TEXT_5), reloaded.getStoredMessageTexts());
         assertEquals(List.of("78:1:WHERETIME", "99:4:OKYOU"), reloaded.getMessageHashes());
     }
+
+    @Test
+    public void testLoadStoredMessagesDoesNotDuplicate() throws IOException {
+        manager.saveStoredMessages();
+
+        MessageManager reloaded = new MessageManager(manager.getStorageFile());
+        reloaded.loadStoredMessages();
+        reloaded.loadStoredMessages();
+
+        assertEquals(List.of(TEXT_2, TEXT_5), reloaded.getStoredMessageTexts());
+        assertEquals(2, reloaded.getMessageHashes().size());
+        assertTrue(reloaded.isStoredMessagesLoaded());
+    }
+
+    @Test
+    public void testStoreMessageKeepsFileInSyncWithArray() throws IOException {
+        MessageManager fresh = new MessageManager(tempDir.resolve("freshStored.json"));
+        Message stored = new Message("5512345678", 0, SENDER, "+27830001111", "Sync check");
+        stored.sentMessage(3);
+
+        fresh.storeMessage(stored);
+
+        assertEquals(List.of("Sync check"), fresh.getStoredMessageTexts());
+        assertTrue(Files.readString(fresh.getStorageFile()).contains("Sync check"));
+
+        MessageManager reloaded = new MessageManager(fresh.getStorageFile());
+        reloaded.loadStoredMessages();
+        assertEquals(List.of("Sync check"), reloaded.getStoredMessageTexts());
+    }
+
+    @Test
+    public void testSearchIgnoresBlankInput() {
+        assertNull(manager.findMessageById("   "));
+        assertTrue(manager.searchByRecipient("").isEmpty());
+        assertTrue(manager.searchByRecipient(null).isEmpty());
+    }
+
+    @Test
+    public void testDeleteByHashIgnoresBlankInput() throws IOException {
+        assertEquals("No stored message found with hash: null", manager.deleteByHash(null));
+        assertEquals("No stored message found with hash:    ", manager.deleteByHash("   "));
+        assertEquals(List.of(TEXT_2, TEXT_5), manager.getStoredMessageTexts());
+    }
 }

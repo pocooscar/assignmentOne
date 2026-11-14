@@ -138,16 +138,20 @@ public class Message {
      */
     public String createMessageHash() {
         List<String> words = new ArrayList<>();
-        for (String word : messageText.trim().split("\\s+")) {
-            String cleaned = word.replaceAll("[^A-Za-z0-9]", "");
-            if (!cleaned.isEmpty()) {
-                words.add(cleaned);
+        String text = messageText == null ? "" : messageText.trim();
+        if (!text.isEmpty()) {
+            for (String word : text.split("\\s+")) {
+                String cleaned = word.replaceAll("[^A-Za-z0-9]", "");
+                if (!cleaned.isEmpty()) {
+                    words.add(cleaned);
+                }
             }
         }
         String firstWord = words.isEmpty() ? "" : words.get(0);
         String lastWord = words.isEmpty() ? "" : words.get(words.size() - 1);
 
-        String idPrefix = messageId.length() >= 2 ? messageId.substring(0, 2) : messageId;
+        String id = messageId == null ? "" : messageId;
+        String idPrefix = id.length() >= 2 ? id.substring(0, 2) : id;
         return (idPrefix + ":" + messageNumber + ":" + firstWord + lastWord).toUpperCase();
     }
 

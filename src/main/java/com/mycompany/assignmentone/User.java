@@ -105,12 +105,24 @@ public class User {
         System.out.println("Password successfully captured.");
 
         // FULL NAMES
-        System.out.print("Please enter your first name: ");
-        String first_name_value = scanner.nextLine();
+        String first_name_value;
+        do {
+            System.out.print("Please enter your first name: ");
+            first_name_value = scanner.nextLine().trim();
+            if (first_name_value.isEmpty()) {
+                System.out.println("First name cannot be empty.");
+            }
+        } while (first_name_value.isEmpty());
         this.first_name = first_name_value;
 
-        System.out.print("Please enter your last name: ");
-        String last_name_value = scanner.nextLine();
+        String last_name_value;
+        do {
+            System.out.print("Please enter your last name: ");
+            last_name_value = scanner.nextLine().trim();
+            if (last_name_value.isEmpty()) {
+                System.out.println("Last name cannot be empty.");
+            }
+        } while (last_name_value.isEmpty());
         this.last_name = last_name_value;
 
         // PHONE NUMBER

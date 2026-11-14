@@ -257,8 +257,11 @@ Holds the Part 3 arrays: **sent**, **disregarded** and **stored** messages,
 plus all **message hashes** and **message IDs**. It also provides
 `printMessages()` and `returnTotalMessages()` (these work on the whole
 list of messages, so they live here rather than on a single `Message`),
-`loadStoredMessages()` to read the JSON file into the stored array, and the
-search, delete and report features used by the Stored Messages menu.
+`loadStoredMessages()` to read the JSON file into the stored array once
+(reloading is ignored so messages are not duplicated), `storeMessage(...)`
+to add a stored message and rewrite the JSON file so it stays in sync with
+the array, and the search, delete and report features used by the Stored
+Messages menu.
 
 ---
 

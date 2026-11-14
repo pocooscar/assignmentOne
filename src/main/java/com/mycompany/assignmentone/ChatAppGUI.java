@@ -115,13 +115,17 @@ public class ChatAppGUI extends JFrame {
             return;
         }
 
-        String firstName = ask("Enter your first name:");
+        String firstName = askUntilValid("Enter your first name:",
+                name -> name != null && !name.isBlank(),
+                "First name cannot be empty.", false);
         if (firstName == null) {
             show("Registration cancelled.");
             return;
         }
 
-        String lastName = ask("Enter your last name:");
+        String lastName = askUntilValid("Enter your last name:",
+                name -> name != null && !name.isBlank(),
+                "Last name cannot be empty.", false);
         if (lastName == null) {
             show("Registration cancelled.");
             return;
@@ -333,8 +337,10 @@ public class ChatAppGUI extends JFrame {
                     return result;
                 }
                 case 1 -> {
-                    String input = ask(message.sentMessage(2));
+                    // Only mark as disregarded after the user confirms with 0.
+                    String input = ask(Message.MESSAGE_DISREGARD_PROMPT);
                     if ("0".equals(input)) {
+                        message.sentMessage(2);
                         manager.addMessage(message);
                         info("Message deleted.");
                         return "Message deleted.";
@@ -343,9 +349,8 @@ public class ChatAppGUI extends JFrame {
                 }
                 case 2 -> {
                     String result = message.sentMessage(3);
-                    manager.addMessage(message);
                     try {
-                        message.storeMessage(manager.getStorageFile());
+                        manager.storeMessage(message);
                     } catch (IOException | RuntimeException e) {
                         result += "\nCould not save message to file: " + e.getMessage();
                     }
@@ -382,14 +387,23 @@ public class ChatAppGUI extends JFrame {
 
     private void searchByMessageId() {
         String id = ask("Enter the message ID:");
-        if (id != null) {
-            show(manager.searchByMessageId(id));
+        if (id == null) {
+            return;
         }
+        if (id.isBlank()) {
+            error("Message ID cannot be empty.");
+            return;
+        }
+        show(manager.searchByMessageId(id));
     }
 
     private void searchByRecipient() {
         String recipient = ask("Enter the recipient's cell number:");
         if (recipient == null) {
+            return;
+        }
+        if (recipient.isBlank()) {
+            error("Recipient cannot be empty.");
             return;
         }
         List<String> results = manager.searchByRecipient(recipient);
@@ -407,6 +421,10 @@ public class ChatAppGUI extends JFrame {
     private void deleteByHash() {
         String hash = ask("Enter the message hash of the stored message to delete:");
         if (hash == null) {
+            return;
+        }
+        if (hash.isBlank()) {
+            error("Message hash cannot be empty.");
             return;
         }
         try {

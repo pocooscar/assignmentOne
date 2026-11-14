@@ -26,6 +26,7 @@ public class MessageManager {
     private final ArrayList<String> messageIds = new ArrayList<>();
 
     private final Path storageFile;
+    private boolean storedMessagesLoaded;
 
     public MessageManager() {
         this(DEFAULT_STORAGE_FILE);
@@ -43,6 +44,9 @@ public class MessageManager {
      * @param message a message whose status has been set by sentMessage()
      */
     public void addMessage(Message message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null.");
+        }
         switch (message.getStatus()) {
             case SENT -> sentMessages.add(message);
             case DISREGARDED -> disregardedMessages.add(message);
@@ -54,11 +58,15 @@ public class MessageManager {
     }
 
     /**
-     * Reads the JSON storage file into the stored messages array.
-     * Does nothing if the file does not exist yet.
+     * Reads the JSON storage file into the stored messages array once.
+     * Does nothing if the file does not exist yet, or if it was already loaded.
      * @throws IOException if the file cannot be read
      */
     public void loadStoredMessages() throws IOException {
+        if (storedMessagesLoaded) {
+            return;
+        }
+        storedMessagesLoaded = true;
         if (!Files.exists(storageFile)) {
             return;
         }
@@ -78,6 +86,20 @@ public class MessageManager {
             json.put(message.toJson());
         }
         Files.writeString(storageFile, json.toString(2));
+    }
+
+    /**
+     * Adds a stored message to the in-memory arrays and rewrites the JSON file
+     * so the file always matches the stored messages array.
+     * @param message a message whose status is STORED
+     * @throws IOException if the file cannot be written
+     */
+    public void storeMessage(Message message) throws IOException {
+        if (message == null || message.getStatus() != Message.Status.STORED) {
+            throw new IllegalArgumentException("Only stored messages can be saved to the JSON file.");
+        }
+        addMessage(message);
+        saveStoredMessages();
     }
 
     // PART 2: SENT MESSAGES
@@ -123,8 +145,12 @@ public class MessageManager {
     public String getLongestStoredMessage() {
         String longest = null;
         for (Message message : storedMessages) {
-            if (longest == null || message.getMessageText().length() > longest.length()) {
-                longest = message.getMessageText();
+            String text = message.getMessageText();
+            if (text == null) {
+                continue;
+            }
+            if (longest == null || text.length() > longest.length()) {
+                longest = text;
             }
         }
         return longest;
@@ -136,8 +162,12 @@ public class MessageManager {
      * @return the matching message, or null if none was found
      */
     public Message findMessageById(String messageId) {
+        if (messageId == null || messageId.isBlank()) {
+            return null;
+        }
+        String target = messageId.trim();
         for (Message message : allMessages()) {
-            if (message.getMessageId().equals(messageId)) {
+            if (target.equals(message.getMessageId())) {
                 return message;
             }
         }
@@ -162,13 +192,17 @@ public class MessageManager {
      */
     public List<String> searchByRecipient(String recipient) {
         List<String> results = new ArrayList<>();
+        if (recipient == null || recipient.isBlank()) {
+            return results;
+        }
+        String target = recipient.trim();
         for (Message message : sentMessages) {
-            if (message.getRecipient().equals(recipient)) {
+            if (target.equals(message.getRecipient())) {
                 results.add(message.getMessageText());
             }
         }
         for (Message message : storedMessages) {
-            if (message.getRecipient().equals(recipient)) {
+            if (target.equals(message.getRecipient())) {
                 results.add(message.getMessageText());
             }
         }
@@ -182,17 +216,42 @@ public class MessageManager {
      * @throws IOException if the storage file cannot be updated
      */
     public String deleteByHash(String messageHash) throws IOException {
+        if (messageHash == null || messageHash.isBlank()) {
+            return "No stored message found with hash: " + messageHash;
+        }
+        String target = messageHash.trim();
         for (int i = 0; i < storedMessages.size(); i++) {
             Message message = storedMessages.get(i);
-            if (message.createMessageHash().equalsIgnoreCase(messageHash)) {
+            String hash = message.createMessageHash();
+            if (hash.equalsIgnoreCase(target)) {
+                String id = message.getMessageId();
                 storedMessages.remove(i);
-                messageHashes.remove(message.createMessageHash());
-                messageIds.remove(message.getMessageId());
+                removeMatchingHashAndId(hash, id);
                 saveStoredMessages();
                 return "Message: \"" + message.getMessageText() + "\" successfully deleted.";
             }
         }
         return "No stored message found with hash: " + messageHash;
+    }
+
+    /**
+     * Removes the hash/ID pair that belongs to the deleted stored message.
+     * Matching by both values avoids wiping a different message's hash when
+     * two messages happen to share a hash or ID.
+     */
+    private void removeMatchingHashAndId(String hash, String id) {
+        for (int i = 0; i < messageHashes.size(); i++) {
+            if (messageHashes.get(i).equalsIgnoreCase(hash)
+                    && i < messageIds.size()
+                    && messageIds.get(i).equals(id)) {
+                messageHashes.remove(i);
+                messageIds.remove(i);
+                return;
+            }
+        }
+        // Fall back to first matching values if the parallel arrays drifted.
+        messageHashes.remove(hash);
+        messageIds.remove(id);
     }
 
     /**
@@ -237,6 +296,7 @@ public class MessageManager {
     public List<String> getMessageHashes() { return new ArrayList<>(messageHashes); }
     public List<String> getMessageIds() { return new ArrayList<>(messageIds); }
     public Path getStorageFile() { return storageFile; }
+    public boolean isStoredMessagesLoaded() { return storedMessagesLoaded; }
 
     private static List<String> textsOf(List<Message> messages) {
         List<String> texts = new ArrayList<>();
