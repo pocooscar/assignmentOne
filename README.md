@@ -2,15 +2,19 @@
 
 ## Overview
 
-This project is a Java console application that implements a simple **user
-registration and login system**, built using object-oriented programming
-(OOP) principles. It was developed in NetBeans as a Maven project and is
-tested with JUnit 5.
+This project is a Java desktop (Swing) application that implements a simple
+**user registration and login system**, built using object-oriented
+programming (OOP) principles. It was developed in NetBeans as a Maven
+project and is tested with JUnit 5.
 
 The core idea: a `User` class encapsulates all account data (username,
 password, phone number, first/last name) and account behavior (validation,
-registration, login), while `AssignmentOne` provides a menu-driven console
-interface for interacting with a `User` object.
+registration, login), while `ChatAppGUI` provides the window the user
+interacts with. `AssignmentOne` is the entry point that opens it.
+
+After a successful login the user enters **QuickChat** (Parts 2 and 3),
+where they can send, store or disregard messages, and search, delete and
+report on stored messages. See [QuickChat](#quickchat-parts-2-and-3).
 
 ---
 
@@ -23,13 +27,19 @@ assignmentOne/
 │   ├── main/
 │   │   └── java/
 │   │       └── com/mycompany/assignmentone/
-│   │           ├── AssignmentOne.java   # Entry point / console menu
-│   │           └── User.java            # Core OOP class
+│   │           ├── AssignmentOne.java   # Entry point, opens the GUI
+│   │           ├── ChatAppGUI.java      # Swing window for the whole app
+│   │           ├── User.java            # Account registration & login
+│   │           ├── Message.java         # A single message
+│   │           └── MessageManager.java  # Message arrays, search, reports
 │   └── test/
 │       └── java/
 │           └── com/mycompany/assignmentone/
-│               └── UserTest.java        # JUnit 5 unit tests
-└── target/                              # Build output (ignored by Git)
+│               ├── UserTest.java            # Part 1 tests
+│               ├── MessageTest.java         # Part 2 tests
+│               └── MessageManagerTest.java  # Part 3 tests
+├── storedMessages.json                  # Created at runtime (ignored by Git)
+└── target/                              # Build output
 ```
 
 ---
@@ -39,6 +49,7 @@ assignmentOne/
 - **Java 21** (JDK)
 - **Maven** (bundled with NetBeans, or installed separately)
 - **JUnit 5 (Jupiter)** — declared as a test-scoped dependency in `pom.xml`
+- **org.json** — used to read and write `storedMessages.json`
 
 ---
 
@@ -124,7 +135,8 @@ Login is split into two methods to separate **testable logic** from
 - **`loginInteractive()`** — console-facing wrapper used by the menu in
   `AssignmentOne`. Prompts for username and password via `Scanner`,
   allows up to **3 attempts**, and delegates the actual check to
-  `login(...)`. Locks the session after repeated failures.
+  `login(...)`. Locks the session after repeated failures. Returns `true`
+  if the user logged in, which is what unlocks QuickChat.
 
 ### Getters
 
@@ -162,35 +174,110 @@ of the program's lifetime — not inside individual methods — since closing
 
 ---
 
-## Class: `AssignmentOne`
+## The GUI: `AssignmentOne` and `ChatAppGUI`
 
-The application's entry point. Presents a simple text menu in a loop:
+`AssignmentOne.main` opens a `ChatAppGUI` window using the operating
+system's normal look. Everything happens in that window:
 
-```
---- Ospoco Chatting System ---
-1. Register
-2. Login
-3. Exit
-Choose an option:
-```
+- **Menu buttons** on the left (the menu changes as you log in and move
+  into QuickChat or Stored Messages).
+- **An output area** on the right that shows results, messages and reports.
+- **Pop-up dialogs** for typing input (username, password, cell number,
+  message) and for confirmations and errors.
 
-| Option | Action                        |
-|--------|--------------------------------|
-| 1      | Calls `user.register()`        |
-| 2      | Calls `user.loginInteractive()`|
-| 3      | Exits the loop and closes scanners |
+The first menu is **Register**, **Login** and **Exit**. Registration and
+login use the same validation rules as Part 1 (`isValidUsername`,
+`isValidPassword`, `isValidPhoneNumber` and `login(...)`), with up to
+3 login attempts before the account is locked for the session. Pressing
+**Cancel** in any input dialog stops the current task and returns to the
+menu.
 
-A single `Scanner` wraps `System.in`. It is created in `main` and passed
-to `User` through the `User(Scanner)` constructor, so the menu and the
-registration/login prompts share it. It is closed once, at program exit,
-by the `try`-with-resources block. (Two separate `Scanner`s on `System.in`
-would each buffer input ahead and steal lines meant for the other.)
+The console methods `register()` and `loginInteractive()` are still in
+`User` from Part 1, but the GUI does not use them.
+
+---
+
+## QuickChat (Parts 2 and 3)
+
+QuickChat opens only after a successful login. It shows
+**"Welcome to QuickChat."**, loads any messages saved in
+`storedMessages.json`, and asks how many messages the user wants to send.
+The user can only enter that many messages.
+
+QuickChat menu buttons:
+
+1. Send Messages
+2. Show recently sent messages (shows "Coming Soon.")
+3. Quit
+4. Stored Messages
+
+### Sending a message
+
+For each message the user enters:
+
+1. **Recipient** — reuses the Part 1 phone rule (`User.isValidCellNumber`):
+   a `+` international code followed by digits, 12 characters max.
+2. **Message** — up to 250 characters.
+3. A random ten-digit **Message ID** and a **Message Hash** are generated.
+   The hash is the first two digits of the ID, the message number
+   (starting at 0) and the first and last words, in capitals,
+   e.g. `00:0:HITONIGHT`.
+4. The user chooses **Send**, **Disregard** (then press `0` to delete) or
+   **Store** (saved to `storedMessages.json`).
+
+Sent messages are displayed in the order Message ID, Message Hash,
+Recipient, Message. Once all messages are entered, the total number sent
+is displayed.
+
+### Stored Messages menu
+
+1. Display the sender and recipient of all stored messages
+2. Display the longest stored message
+3. Search for a message ID (shows recipient and message)
+4. Search for all messages to a recipient
+5. Delete a stored message using its message hash (also updates the JSON file)
+6. Display a report of all stored messages
+
+### Class: `Message`
+
+| Method | Purpose |
+|--------|---------|
+| `boolean checkMessageID()` | Message ID is no more than ten characters |
+| `String checkRecipientCell()` | `"Cell phone number successfully captured."` or the incorrectly-formatted message |
+| `String checkMessageLength()` | `"Message ready to send."` or `"Message exceeds 250 characters by X; please reduce the size."` |
+| `String createMessageHash()` | Builds the message hash |
+| `String sentMessage(int option)` | 1 = Send, 2 = Disregard, 3 = Store; returns the matching confirmation |
+| `String getMessageIdNotice()` | `"Message ID generated: <Message ID>"` |
+| `String printMessageDetails()` | Message ID, Hash, Recipient and Message |
+| `void storeMessage(Path file)` | Appends the message to a JSON file |
+
+### Class: `MessageManager`
+
+Holds the Part 3 arrays: **sent**, **disregarded** and **stored** messages,
+plus all **message hashes** and **message IDs**. It also provides
+`printMessages()` and `returnTotalMessages()` (these work on the whole
+list of messages, so they live here rather than on a single `Message`),
+`loadStoredMessages()` to read the JSON file into the stored array once
+(reloading is ignored so messages are not duplicated), `storeMessage(...)`
+to add a stored message and rewrite the JSON file so it stays in sync with
+the array, and the search, delete and report features used by the Stored
+Messages menu.
 
 ---
 
 ## Testing
 
-Unit tests live in `UserTest.java` and use **JUnit 5** (`org.junit.jupiter`).
+Unit tests use **JUnit 5** (`org.junit.jupiter`):
+
+- `MessageTest.java` — Part 2: message length, recipient format, message
+  hash (including a loop over several messages), message ID creation,
+  send/disregard/store responses, total sent, and JSON storage.
+- `MessageManagerTest.java` — Part 3: populates the arrays with the
+  five test messages and checks the sent array, longest message, message
+  ID search, recipient search, delete by hash and the report.
+- `UserTest.java` — Part 1, described below.
+
+Part 1 tests live in `UserTest.java`.
 Each test prints the actual boolean result to the console (via
 `System.out.println`) before asserting it, so pass/fail values are visible
 in the Maven build log in addition to Surefire's summary report.

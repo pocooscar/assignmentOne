@@ -53,6 +53,17 @@ public class User {
     }
 
     public boolean isValidPhoneNumber(String input) {
+        return isValidCellNumber(input);
+    }
+
+    /**
+     * Shared cell number rule: a '+' country code followed by digits,
+     * no more than 12 characters in total. Static so that other classes
+     * (e.g. Message) can reuse it without creating a User.
+     * @param input the cell number to check
+     * @return true if the number is correctly formatted
+     */
+    public static boolean isValidCellNumber(String input) {
         String pattern = "^\\+\\d{1,11}$";
         return input != null && input.length() <= 12 && input.matches(pattern);
     }
@@ -94,12 +105,24 @@ public class User {
         System.out.println("Password successfully captured.");
 
         // FULL NAMES
-        System.out.print("Please enter your first name: ");
-        String first_name_value = scanner.nextLine();
+        String first_name_value;
+        do {
+            System.out.print("Please enter your first name: ");
+            first_name_value = scanner.nextLine().trim();
+            if (first_name_value.isEmpty()) {
+                System.out.println("First name cannot be empty.");
+            }
+        } while (first_name_value.isEmpty());
         this.first_name = first_name_value;
 
-        System.out.print("Please enter your last name: ");
-        String last_name_value = scanner.nextLine();
+        String last_name_value;
+        do {
+            System.out.print("Please enter your last name: ");
+            last_name_value = scanner.nextLine().trim();
+            if (last_name_value.isEmpty()) {
+                System.out.println("Last name cannot be empty.");
+            }
+        } while (last_name_value.isEmpty());
         this.last_name = last_name_value;
 
         // PHONE NUMBER
@@ -147,11 +170,15 @@ public class User {
     }
 
     //  LOGIN
-    public void loginInteractive() {
+    /**
+     * Console login with up to 3 attempts.
+     * @return true if the user logged in successfully
+     */
+    public boolean loginInteractive() {
 
         if (!account) {
             System.out.println("No account found. Please register first.");
-            return;
+            return false;
         }
 
         System.out.println("Welcome back to Ospoco Chatting System.");
@@ -180,6 +207,7 @@ public class User {
                 }
             }
         }
+        return loggedIn;
     }
 
     // GETTERS 
